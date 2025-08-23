@@ -9,6 +9,7 @@ import { NewsSummary } from "./news-summary"
 import { PredictionDetails } from "./prediction-details"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { generateHistoricalData, getNewsArticles, generateFutureDates } from "@/lib/mock-data"
+import { KeyMetrics } from "./key-metrics"
 
 type StockDashboardProps = {
   ticker: string;
@@ -21,6 +22,7 @@ export function StockDashboard({ ticker }: StockDashboardProps) {
   const [chartData, setChartData] = useState<ChartData[]>([]);
   const [prediction, setPrediction] = useState<PredictStockPriceOutput | null>(null);
   const [summary, setSummary] = useState<SummarizeStockNewsOutput | null>(null);
+  const [currentPrice, setCurrentPrice] = useState<number | null>(null);
 
   useEffect(() => {
     async function fetchData() {
@@ -29,6 +31,10 @@ export function StockDashboard({ ticker }: StockDashboardProps) {
         // Mock data fetching
         const historicalData = generateHistoricalData(timeframe);
         const newsArticles = getNewsArticles(ticker);
+        
+        if (historicalData.length > 0) {
+          setCurrentPrice(historicalData[historicalData.length - 1].close);
+        }
         
         const timeframeMap: { [key: string]: string } = {
           '1m': '1 month',
@@ -118,7 +124,8 @@ export function StockDashboard({ ticker }: StockDashboardProps) {
 
       <div className="grid gap-8">
         <PriceChart data={chartData} loading={loading} />
-        <div className="grid md:grid-cols-2 gap-8">
+        <div className="grid md:grid-cols-3 gap-8">
+          <KeyMetrics currentPrice={currentPrice} loading={loading} />
           <NewsSummary summary={summary} loading={loading} />
           <PredictionDetails prediction={prediction} loading={loading} />
         </div>

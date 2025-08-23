@@ -5,7 +5,8 @@ import { StockSearch } from "@/components/stock-search";
 import { StockDashboard } from "@/components/stock-dashboard";
 import { Icons } from "@/components/icons";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { TrendingUp } from "lucide-react";
+import { TrendingUp, User } from "lucide-react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export default function Home() {
   const [selectedStock, setSelectedStock] = useState<string | null>(null);
@@ -18,8 +19,14 @@ export default function Home() {
             <Icons.logo className="h-8 w-8 mr-2 text-primary" />
             <span className="font-bold text-lg">Stock Insights</span>
           </div>
-          <div className="flex flex-1 items-center justify-end space-x-2">
+          <div className="flex flex-1 items-center justify-end space-x-4">
             <StockSearch onStockSelect={setSelectedStock} />
+            <Avatar>
+              <AvatarImage src="https://placehold.co/40x40.png" alt="User" data-ai-hint="profile" />
+              <AvatarFallback>
+                <User />
+              </AvatarFallback>
+            </Avatar>
           </div>
         </div>
       </header>

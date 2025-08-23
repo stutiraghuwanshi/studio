@@ -5,11 +5,34 @@ import { StockSearch } from "@/components/stock-search";
 import { StockDashboard } from "@/components/stock-dashboard";
 import { Icons } from "@/components/icons";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { TrendingUp, User } from "lucide-react";
+import { TrendingUp, User, Wand2 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { generateAvatar } from "@/ai/flows/generate-avatar";
+import { Button } from "@/components/ui/button";
+import { useToast } from "@/hooks/use-toast";
 
 export default function Home() {
+  const { toast } = useToast();
   const [selectedStock, setSelectedStock] = useState<string | null>(null);
+  const [avatarUrl, setAvatarUrl] = useState("https://placehold.co/40x40.png");
+  const [isAvatarLoading, setIsAvatarLoading] = useState(false);
+
+  const handleGenerateAvatar = async () => {
+    setIsAvatarLoading(true);
+    try {
+      const result = await generateAvatar();
+      setAvatarUrl(result.avatarDataUri);
+    } catch (error) {
+      console.error("Error generating avatar:", error);
+      toast({
+        variant: "destructive",
+        title: "Avatar Generation Failed",
+        description: "Could not generate a new avatar. Please try again.",
+      });
+    } finally {
+      setIsAvatarLoading(false);
+    }
+  };
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -21,8 +44,17 @@ export default function Home() {
           </div>
           <div className="flex flex-1 items-center justify-end space-x-4">
             <StockSearch onStockSelect={setSelectedStock} />
+             <Button
+              onClick={handleGenerateAvatar}
+              disabled={isAvatarLoading}
+              size="sm"
+              variant="outline"
+            >
+              <Wand2 className="mr-2 h-4 w-4" />
+              {isAvatarLoading ? "Generating..." : "New Avatar"}
+            </Button>
             <Avatar>
-              <AvatarImage src="https://placehold.co/40x40.png" alt="User" data-ai-hint="profile" />
+              <AvatarImage src={avatarUrl} alt="User" data-ai-hint="profile" />
               <AvatarFallback>
                 <User />
               </AvatarFallback>

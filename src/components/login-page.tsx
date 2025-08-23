@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Icons } from "./icons";
 import { useToast } from "@/hooks/use-toast";
+import { RadioGroup, RadioGroupItem } from "./ui/radio-group";
 
 type LoginPageProps = {
   onLoginSuccess: () => void;
@@ -21,6 +22,7 @@ export function LoginPage({ onLoginSuccess }: LoginPageProps) {
   const [username, setUsername] = useState("");
   const [dob, setDob] = useState("");
   const [securityPin, setSecurityPin] = useState("");
+  const [gender, setGender] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   const handlePinChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -91,6 +93,28 @@ export function LoginPage({ onLoginSuccess }: LoginPageProps) {
                 onChange={(e) => setDob(e.target.value)}
                 required
               />
+            </div>
+             <div className="space-y-2">
+                <Label>Gender</Label>
+                <RadioGroup
+                    value={gender}
+                    onValueChange={setGender}
+                    className="flex space-x-4 pt-2"
+                    required
+                >
+                    <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="female" id="female" />
+                        <Label htmlFor="female">Female</Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="male" id="male" />
+                        <Label htmlFor="male">Male</Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="other" id="other" />
+                        <Label htmlFor="other">Other</Label>
+                    </div>
+                </RadioGroup>
             </div>
             <div className="space-y-2">
               <Label htmlFor="securityPin">Security Pin</Label>

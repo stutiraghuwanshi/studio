@@ -121,7 +121,7 @@ export function LoginPage({ onLoginSuccess }: LoginPageProps) {
                     </div>
                     <div className="flex items-center space-x-2">
                         <RadioGroupItem value="other" id="other" />
-                        <Label htmlFor="other">Not prefer to disclose</Label>
+                        <Label htmlFor="other">Other</Label>
                     </div>
                 </RadioGroup>
             </div>

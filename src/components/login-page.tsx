@@ -12,7 +12,9 @@ type LoginPageProps = {
   onLoginSuccess: () => void;
 };
 
-const HARDCODED_PIN = "1234";
+const HARDCODED_USERNAME = "stutiraghuwanshi";
+const HARDCODED_PIN = "1510";
+const HARDCODED_DOB = "2004-10-15";
 
 export function LoginPage({ onLoginSuccess }: LoginPageProps) {
   const { toast } = useToast();
@@ -44,19 +46,16 @@ export function LoginPage({ onLoginSuccess }: LoginPageProps) {
     setIsLoading(true);
 
     setTimeout(() => {
-      if (securityPin === HARDCODED_PIN) {
+      if (username === HARDCODED_USERNAME && securityPin === HARDCODED_PIN && dob === HARDCODED_DOB) {
         onLoginSuccess();
       } else {
         toast({
             variant: "destructive",
             title: "Login Failed",
-            description: "Incorrect security pin. Please try again.",
+            description: "Incorrect credentials. Please try again.",
         })
       }
       setIsLoading(false);
-      setUsername("");
-      setDob("");
-      setSecurityPin("");
     }, 500);
   };
 

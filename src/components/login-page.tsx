@@ -12,15 +12,23 @@ type LoginPageProps = {
   onLoginSuccess: () => void;
 };
 
-const HARDCODED_PASSWORD = "password";
+const HARDCODED_PIN = "1234";
 
 export function LoginPage({ onLoginSuccess }: LoginPageProps) {
   const { toast } = useToast();
   const [username, setUsername] = useState("");
   const [dob, setDob] = useState("");
-  const [password, setPassword] = useState("");
+  const [securityPin, setSecurityPin] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
+  const handlePinChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    // Allow only numbers
+    if (/^[0-9]*$/.test(value)) {
+      setSecurityPin(value);
+    }
+  };
+  
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -36,19 +44,19 @@ export function LoginPage({ onLoginSuccess }: LoginPageProps) {
     setIsLoading(true);
 
     setTimeout(() => {
-      if (password === HARDCODED_PASSWORD) {
+      if (securityPin === HARDCODED_PIN) {
         onLoginSuccess();
       } else {
         toast({
             variant: "destructive",
             title: "Login Failed",
-            description: "Incorrect password. Please try again.",
+            description: "Incorrect security pin. Please try again.",
         })
       }
       setIsLoading(false);
       setUsername("");
       setDob("");
-      setPassword("");
+      setSecurityPin("");
     }, 500);
   };
 
@@ -86,14 +94,17 @@ export function LoginPage({ onLoginSuccess }: LoginPageProps) {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
+              <Label htmlFor="securityPin">Security Pin</Label>
               <Input
-                id="password"
+                id="securityPin"
                 type="password"
-                placeholder="••••••••"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                inputMode="numeric"
+                pattern="[0-9]*"
+                placeholder="••••"
+                value={securityPin}
+                onChange={handlePinChange}
                 required
+                maxLength={4}
               />
             </div>
           </CardContent>

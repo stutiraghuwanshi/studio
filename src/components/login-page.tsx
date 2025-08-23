@@ -7,7 +7,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Icons } from "./icons";
 import { useToast } from "@/hooks/use-toast";
-import { Textarea } from "@/components/ui/textarea";
 
 type LoginPageProps = {
   onLoginSuccess: () => void;
@@ -19,7 +18,6 @@ export function LoginPage({ onLoginSuccess }: LoginPageProps) {
   const { toast } = useToast();
   const [username, setUsername] = useState("");
   const [dob, setDob] = useState("");
-  const [address, setAddress] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
@@ -50,7 +48,6 @@ export function LoginPage({ onLoginSuccess }: LoginPageProps) {
       setIsLoading(false);
       setUsername("");
       setDob("");
-      setAddress("");
       setPassword("");
     }, 500);
   };
@@ -85,16 +82,6 @@ export function LoginPage({ onLoginSuccess }: LoginPageProps) {
                 type="date"
                 value={dob}
                 onChange={(e) => setDob(e.target.value)}
-                required
-              />
-            </div>
-             <div className="space-y-2">
-              <Label htmlFor="address">Address</Label>
-              <Textarea
-                id="address"
-                placeholder="123 Main St, Anytown, USA"
-                value={address}
-                onChange={(e) => setAddress(e.target.value)}
                 required
               />
             </div>

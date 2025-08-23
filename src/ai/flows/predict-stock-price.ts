@@ -11,21 +11,24 @@
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
 
+const PricePointSchema = z.object({
+  date: z.string().describe('The date of the price in YYYY-MM-DD format.'),
+  price: z.number().describe('The stock price for that date.'),
+});
+
 const PredictStockPriceInputSchema = z.object({
-  historicalData: z
-    .string()
-    .describe(
-      'Historical stock data, such as closing prices over a period, as a JSON string.'
-    ),
+  historicalData: z.array(PricePointSchema).describe('Historical stock data points.'),
   ticker: z.string().describe('The ticker symbol of the stock to predict.'),
-  timeframe: z.string().describe('The timeframe for the prediction (e.g., 1 month, 6 months, 1 year).'),
+  timeframe: z
+    .string()
+    .describe('The timeframe for the prediction (e.g., 1 month, 6 months, 1 year).'),
 });
 export type PredictStockPriceInput = z.infer<typeof PredictStockPriceInputSchema>;
 
 const PredictStockPriceOutputSchema = z.object({
   predictedPrices: z
-    .string()
-    .describe('Predicted stock prices for the given timeframe, as a JSON string.'),
+    .array(PricePointSchema)
+    .describe('Predicted stock prices for the given timeframe.'),
   confidence: z
     .number()
     .describe('A confidence score (0-1) indicating the reliability of the prediction.'),
@@ -35,7 +38,9 @@ const PredictStockPriceOutputSchema = z.object({
 });
 export type PredictStockPriceOutput = z.infer<typeof PredictStockPriceOutputSchema>;
 
-export async function predictStockPrice(input: PredictStockPriceInput): Promise<PredictStockPriceOutput> {
+export async function predictStockPrice(
+  input: PredictStockPriceInput
+): Promise<PredictStockPriceOutput> {
   return predictStockPriceFlow(input);
 }
 
@@ -48,11 +53,15 @@ const prompt = ai.definePrompt({
   Based on the historical stock data provided, predict the stock prices for the next {{{timeframe}}}.
   Also, provide a confidence score (0-1) for your prediction and explain the factors that influenced your prediction.
 
-  Historical Data: {{{historicalData}}}
+  Historical Data:
+  {{#each historicalData}}
+  - {{this.date}}: {{this.price}}
+  {{/each}}
+
   Ticker: {{{ticker}}}
   Timeframe: {{{timeframe}}}
 
-  Ensure the predictedPrices are returned as a JSON string.
+  Ensure the predictedPrices are returned as an array of objects with date and price.
 `,
 });
 

@@ -37,10 +37,15 @@ export function StockDashboard({ ticker }: StockDashboardProps) {
         };
         const predictionTimeframe = timeframeMap[timeframe];
 
+        const historicalPricePoints = historicalData.map(d => ({
+            date: d.date,
+            price: d.close,
+        }));
+
         // AI-powered features
         const [predictionResult, summaryResult] = await Promise.all([
           predictStockPrice({
-            historicalData: JSON.stringify(historicalData),
+            historicalData: historicalPricePoints,
             ticker,
             timeframe: predictionTimeframe,
           }),
@@ -54,13 +59,7 @@ export function StockDashboard({ ticker }: StockDashboardProps) {
         setSummary(summaryResult);
 
         // Prepare chart data
-        const predictedPrices = JSON.parse(predictionResult.predictedPrices) as { date: string, price: number }[];
-        const futureDates = generateFutureDates(timeframe);
-
-        const formattedPredictedData = predictedPrices.map((p, i) => ({
-          date: futureDates[i] || new Date().toISOString().split('T')[0],
-          price: p.price,
-        }));
+        const predictedPrices = predictionResult.predictedPrices;
         
         const combinedChartData: ChartData[] = historicalData.map(d => ({
           date: d.date,
@@ -70,7 +69,7 @@ export function StockDashboard({ ticker }: StockDashboardProps) {
 
         const lastHistoricalPrice = historicalData[historicalData.length-1].close;
         
-        formattedPredictedData.forEach((d, i) => {
+        predictedPrices.forEach((d, i) => {
           combinedChartData.push({
             date: d.date,
             "Historical Price": null,
@@ -79,7 +78,7 @@ export function StockDashboard({ ticker }: StockDashboardProps) {
         });
 
         // Bridge the gap for a continuous line
-        if(combinedChartData.length > historicalData.length) {
+        if(combinedChartData.length > historicalData.length && historicalData.length > 0) {
             const bridgePoint = { ...combinedChartData[historicalData.length -1] };
             bridgePoint["Predicted Price"] = lastHistoricalPrice;
             combinedChartData.splice(historicalData.length -1, 1, bridgePoint);

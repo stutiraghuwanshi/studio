@@ -25,11 +25,11 @@ export type ChartData = {
 const chartConfig = {
   historical: {
     label: "Historical Price",
-    color: "hsl(var(--accent))",
+    color: "hsl(var(--chart-2))",
   },
   predicted: {
     label: "Predicted Price",
-    color: "hsl(var(--primary))",
+    color: "hsl(var(--chart-1))",
   },
 } satisfies ChartConfig
 

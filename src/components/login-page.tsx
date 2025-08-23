@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Icons } from "./icons";
 import { useToast } from "@/hooks/use-toast";
+import { Textarea } from "@/components/ui/textarea";
 
 type LoginPageProps = {
   onLoginSuccess: () => void;
@@ -16,11 +17,24 @@ const HARDCODED_PASSWORD = "password";
 
 export function LoginPage({ onLoginSuccess }: LoginPageProps) {
   const { toast } = useToast();
+  const [username, setUsername] = useState("");
+  const [dob, setDob] = useState("");
+  const [address, setAddress] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (username.includes(" ")) {
+      toast({
+        variant: "destructive",
+        title: "Invalid Username",
+        description: "Username cannot contain spaces.",
+      });
+      return;
+    }
+
     setIsLoading(true);
 
     setTimeout(() => {
@@ -34,12 +48,15 @@ export function LoginPage({ onLoginSuccess }: LoginPageProps) {
         })
       }
       setIsLoading(false);
+      setUsername("");
+      setDob("");
+      setAddress("");
       setPassword("");
     }, 500);
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
+    <div className="flex min-h-screen items-center justify-center bg-background p-4">
       <Card className="w-full max-w-sm">
         <form onSubmit={handleSubmit}>
           <CardHeader className="text-center">
@@ -47,9 +64,40 @@ export function LoginPage({ onLoginSuccess }: LoginPageProps) {
                 <Icons.logo className="h-10 w-10 text-primary" />
             </div>
             <CardTitle className="text-2xl">Welcome Back</CardTitle>
-            <CardDescription>Enter your password to access the dashboard.</CardDescription>
+            <CardDescription>Enter your details to access the dashboard.</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="username">Username</Label>
+              <Input
+                id="username"
+                type="text"
+                placeholder="your_username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                required
+              />
+            </div>
+             <div className="space-y-2">
+              <Label htmlFor="dob">Date of Birth</Label>
+              <Input
+                id="dob"
+                type="date"
+                value={dob}
+                onChange={(e) => setDob(e.target.value)}
+                required
+              />
+            </div>
+             <div className="space-y-2">
+              <Label htmlFor="address">Address</Label>
+              <Textarea
+                id="address"
+                placeholder="123 Main St, Anytown, USA"
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
+                required
+              />
+            </div>
             <div className="space-y-2">
               <Label htmlFor="password">Password</Label>
               <Input

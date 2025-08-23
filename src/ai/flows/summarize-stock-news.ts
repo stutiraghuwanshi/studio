@@ -37,7 +37,7 @@ const prompt = ai.definePrompt({
   Summarize the following news articles:
 
   {{#each newsArticles}}
-  Article {{@index + 1}}: {{{this}}}
+  Article {{@index}}: {{{this}}}
   {{/each}}
   `,
 });

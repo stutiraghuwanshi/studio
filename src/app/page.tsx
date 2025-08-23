@@ -10,6 +10,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { generateAvatar } from "@/ai/flows/generate-avatar";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 export default function Home() {
   const { toast } = useToast();
@@ -53,6 +54,7 @@ export default function Home() {
               <Wand2 className="mr-2 h-4 w-4" />
               {isAvatarLoading ? "Generating..." : "New Avatar"}
             </Button>
+            <ThemeToggle />
             <Avatar>
               <AvatarImage src={avatarUrl} alt="User" data-ai-hint="profile" />
               <AvatarFallback>

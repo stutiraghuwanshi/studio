@@ -15,15 +15,19 @@ import { LoginPage } from "@/components/login-page";
 
 export default function Home() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [gender, setGender] = useState("");
 
   if (!isAuthenticated) {
-    return <LoginPage onLoginSuccess={() => setIsAuthenticated(true)} />;
+    return <LoginPage onLoginSuccess={(loggedInGender) => {
+      setGender(loggedInGender)
+      setIsAuthenticated(true)
+    }} />;
   }
 
-  return <AppContent />;
+  return <AppContent gender={gender} />;
 }
 
-function AppContent() {
+function AppContent({ gender }: { gender: string }) {
   const { toast } = useToast();
   const [selectedStock, setSelectedStock] = useState<string | null>(null);
   const [avatarUrl, setAvatarUrl] = useState("https://placehold.co/40x40.png");
@@ -32,7 +36,7 @@ function AppContent() {
   const handleGenerateAvatar = async () => {
     setIsAvatarLoading(true);
     try {
-      const result = await generateAvatar();
+      const result = await generateAvatar({ gender });
       setAvatarUrl(result.avatarDataUri);
     } catch (error) {
       console.error("Error generating avatar:", error);

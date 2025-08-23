@@ -10,7 +10,7 @@ import { useToast } from "@/hooks/use-toast";
 import { RadioGroup, RadioGroupItem } from "./ui/radio-group";
 
 type LoginPageProps = {
-  onLoginSuccess: () => void;
+  onLoginSuccess: (gender: string) => void;
 };
 
 const HARDCODED_USERNAME = "stutiraghuwanshi";
@@ -45,11 +45,20 @@ export function LoginPage({ onLoginSuccess }: LoginPageProps) {
       return;
     }
 
+    if (!gender) {
+      toast({
+        variant: "destructive",
+        title: "Gender not selected",
+        description: "Please select a gender.",
+      });
+      return;
+    }
+
     setIsLoading(true);
 
     setTimeout(() => {
       if (username === HARDCODED_USERNAME && securityPin === HARDCODED_PIN && dob === HARDCODED_DOB) {
-        onLoginSuccess();
+        onLoginSuccess(gender);
       } else {
         toast({
             variant: "destructive",
@@ -112,7 +121,7 @@ export function LoginPage({ onLoginSuccess }: LoginPageProps) {
                     </div>
                     <div className="flex items-center space-x-2">
                         <RadioGroupItem value="other" id="other" />
-                        <Label htmlFor="other">Other</Label>
+                        <Label htmlFor="other">Not prefer to disclose</Label>
                     </div>
                 </RadioGroup>
             </div>

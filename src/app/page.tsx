@@ -11,8 +11,19 @@ import { generateAvatar } from "@/ai/flows/generate-avatar";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { LoginPage } from "@/components/login-page";
 
 export default function Home() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  if (!isAuthenticated) {
+    return <LoginPage onLoginSuccess={() => setIsAuthenticated(true)} />;
+  }
+
+  return <AppContent />;
+}
+
+function AppContent() {
   const { toast } = useToast();
   const [selectedStock, setSelectedStock] = useState<string | null>(null);
   const [avatarUrl, setAvatarUrl] = useState("https://placehold.co/40x40.png");

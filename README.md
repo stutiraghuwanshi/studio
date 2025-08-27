@@ -20,8 +20,11 @@
 - **Responsive Design**: The application is fully responsive and works seamlessly on both desktop and mobile devices.
 
 <img width="953" height="443" alt="stock1" src="https://github.com/user-attachments/assets/7a66cd2d-2cc2-490d-ab4e-c865cf7760a3" />
-![WhatsApp Image 2025-08-27 at 12 39 11_e77aaacf](https://github.com/user-attachments/assets/d82ac548-5590-475d-94d8-bac2572a3712)
-![mainpage](https://github.com/user-attachments/assets/168cde1e-b098-48c0-9fad-61c94de41780)
+<img width="953" height="443" alt="stock1" src="(https://github.com/user-attachments/assets/21c1b503-21b2-4399-97be-0614f9e89b0a)" />
+<img width="959" height="454" alt="image" src="https://github.com/user-attachments/assets/10546635-c114-4c6a-8b5e-0bca7ca6186d" />
+
+
+
 
 
 

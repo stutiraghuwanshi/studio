@@ -3,7 +3,8 @@
 
 # Stock Insights - AI-Powered Financial Analysis
 
-![Stock Insights Dashboard](https://placehold.co/800x400/282c34/ffffff?text=Your+Dashboard+Screenshot+Here)
+<img width="943" height="392" alt="image" src="https://github.com/user-attachments/assets/329182f2-6505-4fd8-9fa7-3b56ae9981a2" />
+)
 <p align="center"><i>A modern web application that provides AI-driven stock predictions, news summaries, and personalized user experiences.</i></p>
 
 ---
